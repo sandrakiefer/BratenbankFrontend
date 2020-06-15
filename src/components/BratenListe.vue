@@ -3,7 +3,7 @@
     <button @click="reloadList()">
       <i class="fas fa-sync" />
     </button>
-    <input v-model="suchwort" placeholder="Suchbegriff" />
+    <input type="text" v-model="suchwort" placeholder="Suchbegriff" />
     <table class="table">
       <thead>
         <th>Beschreibung</th>
@@ -32,53 +32,47 @@ import { useBraten } from "@/service/BratenStore";
 
 export default defineComponent({
   name: "BratenListe",
-  components: {
-    BratenListeZeile
+  props: {
+    von: { type: Number, required: true },
+    bis: { type: Number, required: true }
   },
-  setup() {
+  components: { BratenListeZeile },
+  setup(props) {
     const { liste, update, errormessage } = useBraten();
-    
     // Variable "suchwort" vereinbaren
-
-
-
-    
+    const suchwort = ref("");
     // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
     onMounted(async () => {
       await update();
     });
-
-
     // Funktion reloadList() soll auf Button-Druck Liste neu laden
-
-
-
-
-
-
-
+    function reloadList(): void {
+      liste.value.sort( () => Math.random() - 0.5 );
+    }
     // Variable "anzeigeliste" soll nur diejenigen Einträge aus "liste" enthalten,
     // die "suchwort" enthalten (Groß-/Kleinschreibung egal) in
     // einem der Felder "beschreibung", "vollname" oder "abholort"
     // Wenn "suchwort" weniger als 3 Zeichen lang ist, soll "anzeigeliste"
     // die ganze Liste enthalten. 
     // Bei Änderungen von "suchwort" muss "anzeigeliste" sich sofort anpassen
-    
-    const anzeigeliste = liste  // bitte geeignet ersetzen
-
-
-
-
-
-
+    const anzeigeliste = computed( () => {
+      const n: number = suchwort.value.length;
+      if (suchwort.value.length < 3) {
+        return liste.value;
+      } else {
+        return liste.value.filter(e => 
+          e.beschreibung.toLowerCase().includes(suchwort.value.toLowerCase()) || 
+          e.abholort.toLowerCase().includes(suchwort.value.toLowerCase()) || 
+          e.anbieter.vollname.toLowerCase().includes(suchwort.value.toLowerCase())
+        );
+      }
+    });
 
     return {
       anzeigeliste,
-      /*
       reloadList,
       errormessage,
       suchwort
-      */
     };
   }
 });
