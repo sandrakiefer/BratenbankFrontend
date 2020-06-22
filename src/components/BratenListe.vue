@@ -32,12 +32,12 @@ import { useBraten } from "@/service/BratenStore";
 
 export default defineComponent({
   name: "BratenListe",
-  props: {
-    von: { type: Number, required: true },
-    bis: { type: Number, required: true }
-  },
+  // props: {
+  //   von: { type: Number, required: true },
+  //   bis: { type: Number, required: true }
+  // },
   components: { BratenListeZeile },
-  setup(props) {
+  setup() {
     const { liste, update, errormessage } = useBraten();
     // Variable "suchwort" vereinbaren
     const suchwort = ref("");
@@ -47,7 +47,7 @@ export default defineComponent({
     });
     // Funktion reloadList() soll auf Button-Druck Liste neu laden
     function reloadList(): void {
-      liste.value.sort( () => Math.random() - 0.5 );
+      update();
     }
     // Variable "anzeigeliste" soll nur diejenigen Einträge aus "liste" enthalten,
     // die "suchwort" enthalten (Groß-/Kleinschreibung egal) in
@@ -57,7 +57,7 @@ export default defineComponent({
     // Bei Änderungen von "suchwort" muss "anzeigeliste" sich sofort anpassen
     const anzeigeliste = computed( () => {
       const n: number = suchwort.value.length;
-      if (suchwort.value.length < 3) {
+      if (n < 3) {
         return liste.value;
       } else {
         return liste.value.filter(e => 
