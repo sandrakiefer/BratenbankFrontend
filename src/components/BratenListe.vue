@@ -12,7 +12,7 @@
         <th>Anbieter / Abholort</th>
       </thead>
       <tbody>
-        <BratenListeZeile :braten="br" v-for="br in anzeigeliste" :key="br.id" />
+        <BratenListeZeile :braten="br" v-for="br in anzeigeliste" :key="br.id" @delete-zeile="removeZeile($event)" />
       </tbody>
     </table>
     <div class="message is-danger">{{errormessage}}</div>
@@ -38,7 +38,7 @@ export default defineComponent({
   // },
   components: { BratenListeZeile },
   setup() {
-    const { liste, update, errormessage } = useBraten();
+    const { liste, update, remove, errormessage } = useBraten();
     // Variable "suchwort" vereinbaren
     const suchwort = ref("");
     // sobald Komponente initialisiert ist, update() zum Füllen der "liste" ausführen
@@ -48,6 +48,9 @@ export default defineComponent({
     // Funktion reloadList() soll auf Button-Druck Liste neu laden
     function reloadList(): void {
       update();
+    }
+    function removeZeile(id: number): void {
+      remove(id);
     }
     // Variable "anzeigeliste" soll nur diejenigen Einträge aus "liste" enthalten,
     // die "suchwort" enthalten (Groß-/Kleinschreibung egal) in
@@ -71,6 +74,7 @@ export default defineComponent({
     return {
       anzeigeliste,
       reloadList,
+      removeZeile,
       errormessage,
       suchwort
     };

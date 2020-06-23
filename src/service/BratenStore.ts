@@ -23,7 +23,7 @@ function push(ele: Braten): void {
 
 
 async function update() {
-  fetch('/api/braten')
+  fetch(`/api/braten`)
     .then( (response) => {
       if(!response.ok) {
         throw new Error('Fehler bei der Serverkommunikation');
@@ -84,6 +84,18 @@ async function update() {
   // state.liste = bratenliste.sort(() => Math.random()-0.5)
 }
 
+async function remove(id: number) {
+  fetch(`api/braten/${id}`, { method: 'delete' })
+    .then( (response) => {
+      if(!response.ok) {
+        throw new Error('Fehler bei der Serverkommunikation');
+      }
+    })
+    .catch( (reason) => {
+      state.errormessage = reason;
+    });
+}
+
 /*
  * Die exportierte use..()-Funktion gibt gezielten Zugriff auf von außen nutzbare Features
  * Verwendung einfach mit import und Auswahl gewünschter Features, z.B. so:
@@ -94,6 +106,7 @@ export function useBraten() {
     // computed() zur Erzeugung einer zwar reaktiven, aber read-only-Version der Liste und der Fehlermeldung
     liste: computed(() => state.liste),
     errormessage: computed(() => state.errormessage),
+    remove,
     update,
     push
   }
