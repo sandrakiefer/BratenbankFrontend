@@ -7,7 +7,7 @@ Vue.use(CompositionApi)
 //////////////////////////////////////////////////////////////////////////////
 
 import { computed } from '@vue/composition-api'
-
+import { Client } from '@stomp/stompjs'
 import '@/service/Braten'
 
 /**************************************************/
@@ -95,6 +95,42 @@ async function remove(id: number) {
       state.errormessage = reason;
     });
 }
+
+const wsurl = "ws://localhost:9090/stompbroker";
+const DEST = "/topic/braten";
+const stompclient = new Client({ brokerURL: wsurl });
+stompclient.onConnect = () => {
+  stompclient.subscribe(DEST, (message) => {
+    console.log("JUHU");
+    const tmp: BratenMessage = JSON.parse(message.body);
+    if (tmp.operation == "delete") {
+      console.log("DELETE");
+      for (const i in state.liste) {
+        if (state.liste[i].id == tmp.braten.id) {
+          state.liste.splice(parseInt(i), 1);
+        }
+      }
+    }
+    if (tmp.operation == "change") {
+      console.log("CHANGE");
+      console.log(state.liste);
+      console.log(tmp.braten);
+      for (const i in state.liste) {
+        if (state.liste[i].id == tmp.braten.id) {
+          // TODO: warum gehen manche daten verloren?
+          // state.liste[i] = tmp.braten;
+          // console.log(state.liste); 
+          state.liste[i].abholort = tmp.braten.abholort;
+          state.liste[i].beschreibung = tmp.braten.beschreibung;
+          state.liste[i].haltbarbis = tmp.braten.haltbarbis;
+          state.liste[i].vgrad = tmp.braten.vgrad;
+          console.log(state.liste);
+        }
+      }
+    }
+  });
+};
+stompclient.activate();
 
 /*
  * Die exportierte use..()-Funktion gibt gezielten Zugriff auf von außen nutzbare Features

@@ -4,6 +4,7 @@
 * npm install @vue/composition-api
 * npm install @fortawesome/fontawesome-free
 * npm install bulma
+* npm install @stomp/stompjs
 
 ## Project setup
 ```
