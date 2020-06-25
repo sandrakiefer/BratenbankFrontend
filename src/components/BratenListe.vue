@@ -66,7 +66,8 @@ export default defineComponent({
         return liste.value.filter(e => 
           e.beschreibung.toLowerCase().includes(suchwort.value.toLowerCase()) || 
           e.abholort.toLowerCase().includes(suchwort.value.toLowerCase()) || 
-          e.anbieter.vollname.toLowerCase().includes(suchwort.value.toLowerCase())
+          e.anbieter.vollname.toLowerCase().includes(suchwort.value.toLowerCase()) ||
+          e.haltbarbis.toString().toLowerCase().includes(suchwort.value.toLowerCase())
         );
       }
     });
