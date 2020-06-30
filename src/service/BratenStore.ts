@@ -64,29 +64,27 @@ const stompclient = new Client({ brokerURL: wsurl });
 stompclient.onConnect = () => {
   stompclient.subscribe(DEST, (message) => {
     const tmp: BratenMessage = JSON.parse(message.body);
-    if (tmp.operation == "delete") {
-      console.log("DELETE");
-      for (const i in state.liste) {
-        if (state.liste[i].id == tmp.braten.id) {
+    console.log("BRATEN", tmp.braten);
+
+    let change = false;
+    for (const i in state.liste) {
+      if (state.liste[i].id == tmp.braten.id) {
+        if (tmp.operation == "delete") {
+          console.log("DELETE");
           state.liste.splice(parseInt(i), 1);
-        }
-      }
-    }
-    if (tmp.operation == "change") {
-      let change = false;
-      for (const i in state.liste) {
-        if (state.liste[i].id == tmp.braten.id) {
+          change = true;
+        } else {
+          console.log("CHANGE")
+          state.liste.splice(parseInt(i), 1, tmp.braten);
           change = true;
         }
       }
-      if (!change) {
-        console.log("NEW");
-        state.liste.push(tmp.braten);
-        change = false;
-      } else {
-        console.log("No CHANGE possible");
-      }
     }
+    if (!change) {
+      console.log("NEW");
+      state.liste.push(tmp.braten);
+      change = false;
+    } 
   });
 };
 stompclient.activate();
