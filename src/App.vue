@@ -31,7 +31,12 @@
         </div>
       </div>
       <div class="column">
-        <VegetarizitaetsRechner/>
+        <div class="block">
+          <VegetarizitaetsRechner/>
+        </div>
+        <div class="block">
+          <BratChat/>
+        </div>
       </div>
     </div>
   </section>
@@ -41,12 +46,14 @@
 import Vue from "vue";
 import BratenListe from "@/components/BratenListe.vue"
 import VegetarizitaetsRechner from "@/components/VegetarizitaetsRechner.vue"
+import BratChat from "@/components/BratChat.vue"
 
 export default Vue.extend({
   name: "App",
   components: {
     BratenListe,
-    VegetarizitaetsRechner
+    VegetarizitaetsRechner,
+    BratChat
   }
 });
 </script>

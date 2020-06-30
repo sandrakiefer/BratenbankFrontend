@@ -64,8 +64,6 @@ const stompclient = new Client({ brokerURL: wsurl });
 stompclient.onConnect = () => {
   stompclient.subscribe(DEST, (message) => {
     const tmp: BratenMessage = JSON.parse(message.body);
-    console.log("BRATEN", tmp.braten);
-
     let change = false;
     for (const i in state.liste) {
       if (state.liste[i].id == tmp.braten.id) {
