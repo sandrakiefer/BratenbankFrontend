@@ -10,8 +10,12 @@
     <div class="block">
       <nav class="navbar">
         <div class="navbar-menu is-active">
-          <a href="/home" class="navbar-item">Bratenliste</a>
-          <a href="/welt" class="navbar-item">Bratenwelt</a>
+          <div class="navbar-item">
+            <router-link to="/liste">Angebote</router-link>
+          </div>
+          <div class="navbar-item">
+            <router-link to="/chat">Community-Chat</router-link>
+          </div>
         </div>
         <div class="navbar-end">
           <div class="navbar-item">
@@ -25,8 +29,7 @@
       <div class="column is-three-quarters">
         <div class="block">
           <div class="box">
-            <h1 class="title">Das aktuelle Angebot</h1>
-            <BratenListe/>
+            <router-view/>
           </div>
         </div>
       </div>
@@ -44,14 +47,12 @@
 
 <script lang="ts">
 import Vue from "vue";
-import BratenListe from "@/components/BratenListe.vue"
 import VegetarizitaetsRechner from "@/components/VegetarizitaetsRechner.vue"
 import BratChat from "@/components/BratChat.vue"
 
 export default Vue.extend({
   name: "App",
   components: {
-    BratenListe,
     VegetarizitaetsRechner,
     BratChat
   }

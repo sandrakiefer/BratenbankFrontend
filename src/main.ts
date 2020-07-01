@@ -16,7 +16,9 @@ import '@/assets/main.scss'
 // import '@fortawesome/fontawesome-free/js/all.js'
 
 import App from './App.vue'
+import router from '@/router'
 
 new Vue({
+  router,
   render: h => h(App),
 }).$mount('#app')
