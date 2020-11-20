@@ -2,7 +2,7 @@
 Hochschule RheinMain - Medieninformatik - Webbasierte Anwendungen - Sommersemester 2020 <br>
 Projekt von **Sandra Kiefer** (bei Prof. Dr. Wolfgang Weitz)
 
-![Beispielbild der Backend Webanwendung](src/main/assets/beispiel.png)
+![Beispielbild der Backend Webanwendung](src/assets/beispiel.png)
 
 ## Installation und Startanweisungen
 ```sh
